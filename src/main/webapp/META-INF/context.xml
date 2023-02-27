@@ -1,0 +1,16 @@
+<Context>
+    <Resource name="jdbc/cinema"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              validationQuery="SELECT 1"
+              validationInterval="30000"
+              username="root"
+              password="Tan456*Y"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/cinema_servlet_db?characterEncoding=UTF-8"
+              removeAbandoned="true"
+              removeAbandonedTimeout="300"
+              maxActive="100"
+              maxIdle="20"/>
+</Context>
