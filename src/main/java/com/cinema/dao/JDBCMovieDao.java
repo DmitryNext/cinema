@@ -48,27 +48,24 @@ public class JDBCMovieDao implements MovieDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The movie was not created");
-        } finally {
-            close();
         }
     }
 
     /**
      * This method searches a movie by movie id.
-     *
      * @return fetches the movie from the DB.
      */
 
     @Override
     public Movie findById(int id) throws DaoException {
         LOGGER.debug("Getting a movie with the id " + id);
-        Movie movie = null;
+        Movie movie;
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM movies WHERE id = ?")) {
             pstm.setInt(1, id);
 
             ResultSet rs = pstm.executeQuery();
 
-            movie = mapMovie(rs);
+            movie = getMovie(rs);
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -84,14 +81,17 @@ public class JDBCMovieDao implements MovieDao {
      * //     * @param duration
      */
 
-    private Movie mapMovie(ResultSet rs) throws SQLException {
-        Movie temp = new MovieBuilder().setId(rs.getInt("id"))
-                .setName(rs.getString("name"))
-                .setGenre(Genre.valueOf(rs.getString("genre")))
-                .setDuration(Time.valueOf(rs.getString("duration")))
-                .setPoster(rs.getString("poster"))
-                .build();
-        return temp;
+    private Movie getMovie(ResultSet rs) throws SQLException {
+        Movie movie = null;
+        if (rs.next()) {
+            movie = new MovieBuilder().setId(rs.getInt("id"))
+                    .setName(rs.getString("name"))
+                    .setGenre(Genre.valueOf(rs.getString("genre")))
+                    .setDuration(Time.valueOf(rs.getString("duration")))
+                    .setPoster(rs.getString("poster"))
+                    .build();
+        }
+        return movie;
     }
 
     /**
@@ -117,6 +117,16 @@ public class JDBCMovieDao implements MovieDao {
             throw new DaoException("Movie list couldn't be loaded");
         }
         return movieList;
+    }
+
+        private Movie mapMovie(ResultSet rs) throws SQLException {
+        Movie temp = new MovieBuilder().setId(rs.getInt("id"))
+                .setName(rs.getString("name"))
+                .setGenre(Genre.valueOf(rs.getString("genre")))
+                .setDuration(Time.valueOf(rs.getString("duration")))
+                .setPoster(rs.getString("poster"))
+                .build();
+        return temp;
     }
 
     public List findPages(Integer offset, Integer size, String sortDirection) throws DaoException {

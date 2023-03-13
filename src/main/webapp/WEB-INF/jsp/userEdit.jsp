@@ -9,7 +9,7 @@
 
 <style>
     body {
-        background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/img/userEdit.jpg?raw=true) no-repeat center center fixed;
+        background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/static/img/userEdit.jpg?raw=true) no-repeat center center fixed;
     }
     div {
         color: whitesmoke;

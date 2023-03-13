@@ -9,7 +9,7 @@
 
 <style>
     body {
-        background: url(https://fs39.fex.net/preview/4383614943/0x0) no-repeat center center fixed;
+        background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/static/img/movies.jpg?raw=true) no-repeat center center fixed;
     }
     label {
         color: whitesmoke;

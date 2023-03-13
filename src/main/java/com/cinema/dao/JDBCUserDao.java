@@ -50,8 +50,6 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The user was not registered");
-        } finally {
-            close();
         }
     }
 
