@@ -1,4 +1,4 @@
-package com.cinema.Ticket;
+package com.cinema.ticket;
 
 import com.cinema.dao.DaoFactory;
 import com.cinema.dao.TicketDao;
@@ -43,7 +43,7 @@ public class TicketService {
 
     public Page<Ticket> getUserTicketsPaginated(int userId, Integer pageNo, Integer pageSize,
                                                 String sortDirection) throws DaoException {
-        LOGGER.debug("Fetching all the user tickets from the DB paginated");
+        LOGGER.info("Getting page number " + pageNo + ", of size " + pageSize);
         try (TicketDao ticketDao = daoFactory.createTicketDao()) {
             List<Ticket> items = ticketDao.findByUserId(userId, (pageNo - 1) * pageSize, pageSize, sortDirection);
             return new Page<Ticket>(items, pageNo, pageSize);

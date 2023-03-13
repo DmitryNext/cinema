@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * This class helps to get information from DAO layer.
  */
-
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
     private DaoFactory daoFactory = DaoFactory.getInstance();

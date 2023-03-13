@@ -1,16 +1,10 @@
 package com.cinema.movie;
 
-import com.cinema.Ticket.Ticket;
-import com.cinema.Ticket.TicketBuilder;
 import com.cinema.dao.DaoFactory;
 import com.cinema.dao.MovieDao;
-import com.cinema.dao.TicketDao;
 import com.cinema.exception.DaoException;
-import com.cinema.seat.Seat;
 import com.cinema.service.Page;
 import com.cinema.session.Session;
-import com.cinema.session.SessionBuilder;
-import com.cinema.user.User;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -49,16 +43,6 @@ public class MovieService {
             List<Movie> items = movieDao.findPages((pageNo - 1) * pageSize, pageSize, sortDirection);
             return new Page<Movie>(items, pageNo, pageSize);
         }
-    }
-
-    public List<String> getMoviesNames(List<Session> sessions) {
-        List<String> moviesNames = new ArrayList<>();
-        if (sessions != null && !sessions.isEmpty()) {
-            for (Session session : sessions) {
-                moviesNames.add(session.getMovie().getName());
-            }
-        }
-        return moviesNames;
     }
 
     public Movie createMovie(Movie movie) throws DaoException {

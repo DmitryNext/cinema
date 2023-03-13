@@ -1,7 +1,7 @@
 package com.cinema.controller;
 
 import com.cinema.MappingProperties;
-import com.cinema.Ticket.*;
+import com.cinema.ticket.*;
 import com.cinema.exception.DaoException;
 import com.cinema.user.User;
 import org.apache.log4j.Logger;
@@ -30,20 +30,19 @@ public class GetUserTicketsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.debug("Executing to send the userTickets page");
+        User user = (User) request.getSession().getAttribute("user");
         Integer pageNo = Integer.parseInt(request.getParameter("p"));
         Integer pageSize = Integer.parseInt(request.getParameter("s"));
         String sortDirection = request.getParameter("sortDirection");
-        User user = (User) request.getSession().getAttribute("user");
         try {
             Page<Ticket> page = ticketService.getUserTicketsPaginated(user.getId(), pageNo, pageSize, sortDirection);
             request.getSession().setAttribute("userTickets", page);
             request.getSession().setAttribute("currentPage", pageNo);
-            request.getSession().setAttribute("sortDirection", sortDirection);
             request.getSession().setAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
+            return userTicketsPage;
         } catch (DaoException e) {
             request.getSession().setAttribute("errorMessage", e.getMessage());
             return errorPage;
         }
-        return userTicketsPage;
     }
 }

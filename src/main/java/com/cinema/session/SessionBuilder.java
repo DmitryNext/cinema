@@ -1,12 +1,10 @@
 package com.cinema.session;
 
 import com.cinema.movie.Movie;
-import com.cinema.seat.Seat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public class SessionBuilder {
     private int id;

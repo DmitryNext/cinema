@@ -48,6 +48,8 @@ public class JDBCMovieDao implements MovieDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The movie was not created");
+        } finally {
+            close();
         }
     }
 
@@ -61,7 +63,6 @@ public class JDBCMovieDao implements MovieDao {
     public Movie findById(int id) throws DaoException {
         LOGGER.debug("Getting a movie with the id " + id);
         Movie movie = null;
-
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM movies WHERE id = ?")) {
             pstm.setInt(1, id);
 
@@ -95,7 +96,6 @@ public class JDBCMovieDao implements MovieDao {
 
     /**
      * This method fetches movies from the DB.
-     *
      * @return list of movies.
      */
 
@@ -126,10 +126,13 @@ public class JDBCMovieDao implements MovieDao {
                 + sortDirection + " LIMIT ?, ?")) {
             pstm.setInt(1, offset);
             pstm.setInt(2, size);
+
             ResultSet rs = pstm.executeQuery();
+
             while (rs.next()) {
                 movies.add(mapMovie(rs));
             }
+
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

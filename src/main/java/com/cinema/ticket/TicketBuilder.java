@@ -1,4 +1,4 @@
-package com.cinema.Ticket;
+package com.cinema.ticket;
 
 import com.cinema.seat.Seat;
 import com.cinema.session.Session;
@@ -36,7 +36,6 @@ public class TicketBuilder {
         this.user = user;
         return this;
     }
-
 
     public Ticket build() {
         return new Ticket(id, ticketPrice, session, seat, user);

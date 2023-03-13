@@ -1,6 +1,6 @@
 package com.cinema.dao;
 
-import com.cinema.Ticket.Ticket;
+import com.cinema.ticket.Ticket;
 import com.cinema.exception.DaoException;
 
 import java.util.List;

@@ -21,12 +21,6 @@ public class SeatBuilder {
         return this;
     }
 
-    public SeatBuilder setSeatStatus(SeatStatus seatStatus) {
-        this.seatStatus = seatStatus;
-        return this;
-    }
-
-
     public Seat build(){
         return new Seat(id, rowNumber, placeNumber, seatStatus);
     }

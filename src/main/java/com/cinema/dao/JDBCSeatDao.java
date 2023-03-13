@@ -1,7 +1,6 @@
 package com.cinema.dao;
 
 import com.cinema.exception.DaoException;
-import com.cinema.movie.Genre;
 import com.cinema.seat.Seat;
 import com.cinema.seat.SeatBuilder;
 import com.cinema.seat.SeatStatus;
@@ -49,6 +48,8 @@ public class JDBCSeatDao implements SeatDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The seat was not created");
+        } finally {
+            close();
         }
     }
 
@@ -60,8 +61,7 @@ public class JDBCSeatDao implements SeatDao {
     @Override
     public Seat findById(int id) throws DaoException {
         LOGGER.debug("Getting a seat with the id " + id);
-        Seat seat = null;
-
+        Seat seat;
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM seats WHERE id = ?")) {
             pstm.setInt(1, id);
 
@@ -127,6 +127,7 @@ public class JDBCSeatDao implements SeatDao {
             while (rs.next()) {
                 seatList.add(createSeatWithStatus(rs));
             }
+
             rs.close();
             pstm.close();
         } catch (SQLException e) {

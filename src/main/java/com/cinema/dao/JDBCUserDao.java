@@ -50,6 +50,8 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The user was not registered");
+        } finally {
+            close();
         }
     }
 
@@ -61,7 +63,7 @@ public class JDBCUserDao implements UserDao {
     @Override
     public User findById(int id) throws DaoException {
         LOGGER.debug("Getting the user with the id " + id);
-        User user = null;
+        User user;
         try {
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
             pstm.setLong(1, id);
@@ -74,8 +76,9 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The user was not found");
+        } finally {
+            close();
         }
-
         return user;
     }
 
@@ -95,7 +98,6 @@ public class JDBCUserDao implements UserDao {
      * This method fetches users from the DB.
      * @return list of users.
      */
-
     @Override
     public List<User> findAll() throws DaoException {
         List<User> userList = new ArrayList<>();
@@ -110,10 +112,13 @@ public class JDBCUserDao implements UserDao {
                         .build();
                 userList.add(user);
             }
+
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("Users were not found");
+        } finally {
+            close();
         }
         return userList;
     }
@@ -122,7 +127,6 @@ public class JDBCUserDao implements UserDao {
      * This method updates the current user.
      * @param entity represents the current user.
      */
-
     @Override
     public boolean update(Object entity) throws DaoException {
         LOGGER.debug("Updating the current user: " + entity);
@@ -142,6 +146,8 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The user was not updated");
+        } finally {
+            close();
         }
     }
 
@@ -150,12 +156,11 @@ public class JDBCUserDao implements UserDao {
      * @param username represents the username from the DB.
      * @param password represents the encrypted password from the DB.
      */
-
     @Override
     public User findUserByUsernameAndPassword(String username, String password) throws DaoException {
         LOGGER.debug("Getting user with username: " + username + "and password: *");
-        User user = null;
-        PreparedStatement pstm = null;
+        User user;
+        PreparedStatement pstm;
         try {
             pstm = connection.prepareStatement
                     ("SELECT * FROM users WHERE username = ? AND password = ?");
@@ -168,6 +173,8 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("The user was not found by username and password");
+        } finally {
+            close();
         }
         return user;
     }
@@ -176,10 +183,9 @@ public class JDBCUserDao implements UserDao {
      * This method searches for a user by username.
      * @param username represents the username from the DB.
      */
-
     @Override
     public User findUserByUsername(String username) throws DaoException {
-        User user = null;
+        User user;
         try {
             PreparedStatement pstm = connection.prepareStatement
                     ("SELECT * FROM users WHERE username = ?");
@@ -193,6 +199,8 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("User not found by username");
+        } finally {
+            close();
         }
         return user;
     }
@@ -200,11 +208,9 @@ public class JDBCUserDao implements UserDao {
     /**
      * This method saves authorities of a new user such as username and userRole.
      */
-
     @Override
     public boolean save(User user) throws DaoException {
         LOGGER.debug("Updating current user authorities: " + user);
-        User userToUpdate = user;
         try {
             PreparedStatement pstm = connection.prepareStatement
                     ("UPDATE users set username = ?, role_id = ? WHERE id = ?;",
@@ -225,7 +231,8 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findPages(Integer offset, Integer size, String sortDirection, String sortBy) throws DaoException {
+    public List<User> findPages(Integer offset, Integer size,
+                                String sortDirection, String sortBy) throws DaoException {
         LOGGER.info("Getting page with offset " + offset + ", size " + size);
         List<User> users = new ArrayList<>();
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM users ORDER BY " +
@@ -233,6 +240,7 @@ public class JDBCUserDao implements UserDao {
             pstm.setInt(1, offset);
             pstm.setInt(2, size);
             ResultSet rs = pstm.executeQuery();
+
             while(rs.next()) {
                 User user = new UserBuilder().setId(rs.getInt("id"))
                         .setUsername(rs.getString("username"))
@@ -241,10 +249,13 @@ public class JDBCUserDao implements UserDao {
                         .build();
                 users.add(user);
             }
+
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("Users were not found");
+        } finally {
+            close();
         }
         return users;
     }

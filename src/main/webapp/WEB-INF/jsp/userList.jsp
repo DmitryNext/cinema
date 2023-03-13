@@ -22,12 +22,12 @@
 <div class="container my-2">
     <h1><fmt:message key="userList" bundle="${bundle}"/></h1>
 
-    <table border="1" class="table table-hover table-dark">
+    <table class="table table-striped table-dark">
         <thead>
         <tr>
             <th>
                 <a href="${pageContext.request.contextPath}/admin/userlist?p=1&s=10&sortBy=username&sortDirection=${reverseSortDirection}">
-                    <fmt:message key="user.tickets" bundle="${bundle}"/>
+                    <fmt:message key="username" bundle="${bundle}"/>
                 </a>
             </th>
             <th>

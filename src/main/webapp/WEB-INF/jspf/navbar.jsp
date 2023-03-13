@@ -36,7 +36,7 @@
             <c:if test="${sessionScope.authenticated == true && sessionScope.role == 'USER'}">
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="${pageContext.request.contextPath}/user/usertickets?p=1&s=10&sortBy=id&sortDirection=asc">
+                       href="${pageContext.request.contextPath}/user/usertickets?p=1&s=10&sortDirection=${reverseSortDirection}">
                         <fmt:message key="myTickets" bundle="${bundle}"/></a>
                 </li>
             </c:if>

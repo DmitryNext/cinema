@@ -1,11 +1,7 @@
 package com.cinema.controller;
 
 import com.cinema.MappingProperties;
-import com.cinema.exception.DaoException;
 import com.cinema.movie.Genre;
-import com.cinema.movie.Movie;
-import com.cinema.movie.MovieService;
-import com.cinema.service.Page;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

@@ -6,16 +6,14 @@ import javax.servlet.*;
 import java.io.IOException;
 
 public class EncodingFilter implements Filter {
-    private static final Logger LOGGER = Logger.getLogger(EncodingFilter.class);
+    private static final org.apache.log4j.Logger LOGGER = Logger.getLogger(EncodingFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) {
-
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
         LOGGER.trace("Filter starts");
 

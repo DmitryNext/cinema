@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,6 @@ public class GetBuyTicketPageCommand implements Command {
     private static SeatService seatService = SeatService.getInstance();
     private static String buyTicketPage;
     private static String errorPage;
-
 
     public GetBuyTicketPageCommand() {
         LOGGER.debug("Initializing GetSchedulePageCommand");

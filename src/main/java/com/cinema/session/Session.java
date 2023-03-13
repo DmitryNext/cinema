@@ -15,8 +15,6 @@ public class Session {
     private Movie movie;
     int freeSeats;
 
-
-
     public Session(int id, BigDecimal ticketPrice, LocalDate date, LocalTime time, Movie movie, int freeSeats) {
         this.id = id;
         this.ticketPrice = ticketPrice;

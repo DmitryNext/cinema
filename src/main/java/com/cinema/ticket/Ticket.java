@@ -1,4 +1,4 @@
-package com.cinema.Ticket;
+package com.cinema.ticket;
 
 import com.cinema.seat.Seat;
 import com.cinema.session.Session;
@@ -67,7 +67,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" +
+        return "ticket{" +
                 "id=" + id +
                 ", ticketPrice=" + ticketPrice +
                 ", session=" + session +

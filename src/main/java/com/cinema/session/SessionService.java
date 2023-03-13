@@ -4,14 +4,14 @@ import com.cinema.dao.DaoFactory;
 import com.cinema.exception.DaoException;
 import com.cinema.dao.SessionDao;
 import com.cinema.service.Page;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.List;
 
 public class SessionService {
-    private static final Logger LOGGER = Logger.getLogger(SessionService.class);
+    private static final Logger LOGGER = LogManager.getLogger(SessionService.class);
     private DaoFactory daoFactory = DaoFactory.getInstance();
     private static SessionService sessionService;
 

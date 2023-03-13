@@ -11,7 +11,7 @@
 <head>
     <style>
         body {
-            background: url(https://fs39.fex.net/preview/4383614936/0x0) no-repeat center center fixed;
+            background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/img/schedule.jpg?raw=true) no-repeat center center fixed;
         }
         h1 {
             color: whitesmoke;

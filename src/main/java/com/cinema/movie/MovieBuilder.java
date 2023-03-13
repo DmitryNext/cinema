@@ -2,7 +2,6 @@ package com.cinema.movie;
 
 import javax.persistence.*;
 import java.sql.Time;
-import java.time.Duration;
 
 public class MovieBuilder {
     private int id;
@@ -11,7 +10,6 @@ public class MovieBuilder {
     private Genre genre;
     private Time duration;
     private String poster;
-
 
     public MovieBuilder setId(int id) {
         this.id = id;

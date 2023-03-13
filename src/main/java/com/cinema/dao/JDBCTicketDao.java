@@ -1,7 +1,7 @@
 package com.cinema.dao;
 
-import com.cinema.Ticket.Ticket;
-import com.cinema.Ticket.TicketBuilder;
+import com.cinema.ticket.Ticket;
+import com.cinema.ticket.TicketBuilder;
 import com.cinema.exception.DaoException;
 import com.cinema.movie.Genre;
 import com.cinema.movie.Movie;
@@ -26,7 +26,6 @@ public class JDBCTicketDao implements TicketDao {
         this.connection = connection;
     }
 
-
     /**
      * This method creates a new ticket in the DB.
      * This method also saves a new ticket id from the DB.
@@ -40,7 +39,6 @@ public class JDBCTicketDao implements TicketDao {
                         Statement.RETURN_GENERATED_KEYS);
              PreparedStatement pstm2 = connection.prepareStatement
                      ("SELECT * FROM sessions WHERE id = ?")) {
-            connection.setAutoCommit(false);
 
             pstm2.setInt(1, ticket.getSession().getId());
             ResultSet rs = pstm2.executeQuery();
@@ -65,8 +63,6 @@ public class JDBCTicketDao implements TicketDao {
             updateSessionFreeSeats(ticket.getSession());
             updateSessionSeatStatus(ticket.getSession(), ticket.getSeat());
 
-            connection.commit();
-            connection.setAutoCommit(true);
             LOGGER.debug("The ticket has been added");
             return ticket;
         } catch (SQLException e) {
@@ -106,7 +102,6 @@ public class JDBCTicketDao implements TicketDao {
         if (rs.next()) {
             user = new UserBuilder().setId(rs.getInt("id"))
                     .setUsername(rs.getString("username"))
-                    //role?
                     .build();
         }
         return user;
@@ -114,7 +109,6 @@ public class JDBCTicketDao implements TicketDao {
 
     /**
      * This method gets all the tickets from the DB.
-     *
      * @return List of tickets
      */
     @Override
@@ -122,7 +116,6 @@ public class JDBCTicketDao implements TicketDao {
         LOGGER.debug("Creating a list of tickets");
         List<Ticket> ticketList = new ArrayList<>();
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM tickets")) {
-            connection.setAutoCommit(false);
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
@@ -130,11 +123,9 @@ public class JDBCTicketDao implements TicketDao {
             }
 
             rs.close();
-            connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new DaoException("Ticket list couldn't be loaded");
+            throw new DaoException("ticket list couldn't be loaded");
         }
         return ticketList;
     }
@@ -240,7 +231,7 @@ public class JDBCTicketDao implements TicketDao {
         return user;
     }
 
-    public List<Ticket> findByUserId(int userId, Integer offset, Integer size, String sortDirection) throws DaoException {
+    public List findByUserId(int userId, Integer offset, Integer size, String sortDirection) throws DaoException {
         LOGGER.debug("Creating a list of tickets with user id");
         List<Ticket> ticketList = new ArrayList<>();
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM tickets WHERE user_id = ? ORDER BY id "
@@ -252,13 +243,13 @@ public class JDBCTicketDao implements TicketDao {
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
-                ticketList.add(getTicket(rs));
+                ticketList.add(mapTicket(rs));
             }
 
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new DaoException("Ticket list with user id couldn't be loaded");
+            throw new DaoException("ticket list with user id couldn't be loaded");
         } finally {
             close();
         }
@@ -273,13 +264,15 @@ public class JDBCTicketDao implements TicketDao {
             pstm.setInt(1, offset);
             pstm.setInt(2, size);
             ResultSet rs = pstm.executeQuery();
+
             while (rs.next()) {
                 tickets.add(mapTicket(rs));
             }
+
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new DaoException("Ticket list couldn't be loaded");
+            throw new DaoException("ticket list couldn't be loaded");
         } finally {
             close();
         }

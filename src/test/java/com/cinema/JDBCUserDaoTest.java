@@ -12,71 +12,119 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class JDBCUserDaoTest {
-    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/cinema_servlet_test?user=root&password=Tan456*Y&characterEncoding=UTF-8";
+    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/cinema_servlet_db_test?user=root&password=Tan456*Y&characterEncoding=UTF-8";
     Connection connection;
-    JDBCUserDao userDao;
+    JDBCUserDao JDBCUserDao;
 
     @BeforeClass
     public static void dbCreate() throws SQLException, IOException {
         DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-        Connection connection = DriverManager.getConnection(CONNECTION_URL);
-        ScriptRunner sr = new ScriptRunner(connection);
-        Reader reader = new BufferedReader(new FileReader("src/test/resources/whole_db_test_create.sql"));
+        Connection con = DriverManager.getConnection(CONNECTION_URL);
+        ScriptRunner sr = new ScriptRunner(con);
+        Reader reader = new BufferedReader(new FileReader("src/test/resources/cinema_servlet_db_test.sql"));
         sr.runScript(reader);
         reader.close();
     }
 
     @AfterClass
     public static void dropDown() throws SQLException {
-        Connection connection = DBManager.getDataSource().getConnection();
-        Statement st = connection.createStatement();
-        st.executeUpdate("DROP database cinema_servlet_test;");
+        Connection conn = DBManager.getDataSource().getConnection();
+        Statement st = conn.createStatement();
+        st.executeUpdate("DROP database cinema_servlet_db_test;");
     }
 
     @Before
     public void userDaoCreate() throws SQLException {
         connection = DBManager.getDataSource().getConnection();
-        userDao = new JDBCUserDao(connection);
+        JDBCUserDao = new JDBCUserDao(connection);
     }
 
-    @Test
+    @org.junit.Test
     public void shouldCreateNewUser() throws DaoException {
         User newUser = new UserBuilder().setUsername("newUser")
                 .setPassword("user12345")
                 .setUserRole(Role.USER).build();
-        Assert.assertNotNull(userDao.create(newUser));
+        Assert.assertNotNull(JDBCUserDao.create(newUser));
     }
 
-    @Test
+    @org.junit.Test
     public void shouldFindUserById() throws DaoException {
-        User user = userDao.create(new UserBuilder().setUsername("user")
+        User user = JDBCUserDao.create(new UserBuilder().setUsername("user")
                 .setPassword("user12345")
                 .setUserRole(Role.USER).build());
-        Assert.assertNotNull(userDao.findById(user.getId()));
+        Assert.assertNotNull(JDBCUserDao.findById(user.getId()));
     }
 
-    @Test
+    @org.junit.Test
     public void shouldFindUserByUsername() throws DaoException {
-        User user = userDao.create(new UserBuilder().setUsername("user11")
+        User user = JDBCUserDao.create(new UserBuilder().setUsername("user1")
                 .setPassword("user12345")
                 .setUserRole(Role.USER).build());
-        Assert.assertNotNull(userDao.findUserByUsername(user.getUsername()));
+        Assert.assertNotNull(JDBCUserDao.findUserByUsername(user.getUsername()));
     }
 
     @Test
     public void shouldReturnUserList() throws DaoException {
-        userDao.create(new UserBuilder().setUsername("user13")
+        JDBCUserDao.create(new UserBuilder().setUsername("user2")
                 .setPassword("user12345")
                 .setUserRole(Role.USER).build());
-        userDao.create(new UserBuilder().setUsername("user12")
+        JDBCUserDao.create(new UserBuilder().setUsername("user3")
                 .setPassword("user12345")
                 .setUserRole(Role.USER).build());
-        Assert.assertEquals(5, userDao.findAll().size());
+        Assert.assertEquals(5, JDBCUserDao.findAll().size());
     }
 }
+
+//    JDBCUserDao JDBCUserDao;
+//
+//    @Test
+//    public void shouldAddUserToDatabase() throws SQLException, DaoException {
+//        Connection connection = DBManager.getDataSource().getConnection();
+//        JDBCUserDao = new JDBCUserDao(connection);
+//        User newUser = new UserBuilder().setUsername("newUser")
+//                .setPassword("user12345")
+//                .setUserRole(Role.USER).build();
+//        User createdUser = JDBCUserDao.create(newUser);
+//        Assert.assertNotNull(createdUser);
+//        Assert.assertEquals(newUser, createdUser);
+//        connection.close();
+//    }
+//
+//    @Test
+//    public void shouldFindUserById() throws SQLException, DaoException {
+//        Connection connection = DBManager.getDataSource().getConnection();
+//        JDBCUserDao = new JDBCUserDao(connection);
+//        User user = JDBCUserDao.create(new UserBuilder().setUsername("user")
+//                .setPassword("user12345")
+//                .setUserRole(Role.USER).build());
+//        Assert.assertNotNull(JDBCUserDao.findById(user.getId()));
+//        connection.close();
+//    }
+//
+//    @Test
+//    public void shouldFindUserByUsername() throws DaoException, SQLException {
+//        Connection connection = DBManager.getDataSource().getConnection();
+//        JDBCUserDao = new JDBCUserDao(connection);
+//        User user = JDBCUserDao.create(new UserBuilder().setUsername("user11")
+//                .setPassword("user12345")
+//                .setUserRole(Role.USER).build());
+//        Assert.assertNotNull(JDBCUserDao.findUserByUsername(user.getUsername()));
+//        connection.close();
+//    }
+//
+//    @Test
+//    public void shouldReturnUserList() throws DaoException, SQLException {
+//        Connection connection = DBManager.getDataSource().getConnection();
+//        JDBCUserDao = new JDBCUserDao(connection);
+//        JDBCUserDao.create(new UserBuilder().setUsername("user13")
+//                .setPassword("user12345")
+//                .setUserRole(Role.USER).build());
+//        JDBCUserDao.create(new UserBuilder().setUsername("user12")
+//                .setPassword("user12345")
+//                .setUserRole(Role.USER).build());
+//        Assert.assertEquals(5, JDBCUserDao.findAll().size());
+//    }
+//}

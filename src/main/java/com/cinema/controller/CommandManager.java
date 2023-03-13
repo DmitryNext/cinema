@@ -41,7 +41,6 @@ public class CommandManager {
     /**
      * This method is used to get a command instance mapped to http get or post method, based on a request.
      */
-
     public Command getCommand(String path) {
         return commandMap.getOrDefault(path, new GetHomePageCommand());
     }

@@ -1,7 +1,5 @@
 package com.cinema.seat;
 
-import com.cinema.user.Role;
-
 import java.util.Objects;
 
 public class Seat {

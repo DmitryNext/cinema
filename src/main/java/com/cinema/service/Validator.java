@@ -7,7 +7,6 @@ import java.util.Objects;
 /**
  * This class is used to validate information entered during registration and updating.
  */
-
 public class Validator {
 
     public static boolean validateRegistration(String username, String password) {

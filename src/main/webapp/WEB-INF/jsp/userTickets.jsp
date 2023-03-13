@@ -9,7 +9,7 @@
 
 <style>
     body {
-        background: url(https://fs39.fex.net/preview/4383614943/0x0) no-repeat center center fixed;
+        background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/img/userTickets.jpg?raw=true) no-repeat center center fixed;
     }
     h1 {
         color: whitesmoke;
@@ -30,7 +30,7 @@
             <th scope="col"><fmt:message key="price" bundle="${bundle}"/></th>
             <th scope="col"><fmt:message key="ticketMovieName" bundle="${bundle}"/></th>
             <th scope="col"><fmt:message key="ticketSessionTime" bundle="${bundle}"/></th>
-            <th scope="col"><fmt:message key="ticketSeatId" bundle="${bundle}"/></th>
+            <th scope="col"><fmt:message key="ticketSeatPlaceNumber" bundle="${bundle}"/></th>
         </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
                 <td>${ticket.getTicketPrice()}</td>
                 <td>${ticket.getSession().getMovie().getName()}</td>
                 <td>${ticket.getSession().getDate()} ${ticket.getSession().getTime()}</td>
-                <td>${ticket.getSeat().getId()}</td>
+                <td>${ticket.getSeat().getPlaceNumber()}</td>
             </tr>
         </c:forEach>
         </tbody>
@@ -56,7 +56,7 @@
             <div class="col-sm-1">
                 <c:if test="${!userTickets.firstPage}">
                     <a style="color: whitesmoke"
-                       href="${pageContext.request.contextPath}/usertickets?p=${userTickets.pageNo-1}&s=${userTickets.pageSize}&sortDirection=${sortDirection}">
+                       href="${pageContext.request.contextPath}/user/usertickets?p=${userTickets.pageNo-1}&s=${userTickets.pageSize}&sortDirection=${sortDirection}">
                         <fmt:message key="previous" bundle="${bundle}"/>
                     </a>
                 </c:if>
@@ -64,7 +64,7 @@
             <div class="col-sm-1">
                 <c:if test="${!userTickets.lastPage}">
                     <a style="color: whitesmoke"
-                       href="${pageContext.request.contextPath}/usertickets?p=${userTickets.pageNo+1}&s=${userTickets.pageSize}&sortDirection=${sortDirection}">
+                       href="${pageContext.request.contextPath}/user/usertickets?p=${userTickets.pageNo+1}&s=${userTickets.pageSize}&sortDirection=${sortDirection}">
                         <span><fmt:message key="next" bundle="${bundle}"/></span>
                     </a>
                 </c:if>

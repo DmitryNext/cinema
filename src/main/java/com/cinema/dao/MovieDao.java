@@ -6,6 +6,7 @@ import com.cinema.movie.Movie;
 import java.util.List;
 
 public interface MovieDao extends GenericDao {
+
     boolean delete(int id) throws DaoException;
 
     List<Movie> findPages(Integer offset, Integer size, String sortDirection) throws DaoException;

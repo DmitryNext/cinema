@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 public class DBManager {
 
-    private static final ResourceBundle rb = ResourceBundle.getBundle("cinema_servlet_test");
+    private static final ResourceBundle rb = ResourceBundle.getBundle("cinema_servlet_db_test");
 
     public static DataSource getDataSource() {
         MysqlDataSource mds = new MysqlDataSource();

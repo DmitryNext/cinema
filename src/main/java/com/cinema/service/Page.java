@@ -7,7 +7,6 @@ import java.util.List;
  * This class is used for pagination.
  * @param <T> type parameter of item.
  */
-
 public class Page<T> {
     private List<T> items;
     private boolean firstPage;

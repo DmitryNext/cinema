@@ -9,7 +9,7 @@
 
 <style>
     body {
-        background: url(https://fs41.fex.net/preview/4383614958/0x0) no-repeat center center fixed;
+        background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/img/login.jpg?raw=true) no-repeat center center fixed;
     }
     div {
         color: whitesmoke;

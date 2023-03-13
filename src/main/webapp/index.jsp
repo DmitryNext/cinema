@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
 
     <title>Cinema "Drudge's dreams</title>
 
@@ -29,7 +29,7 @@
 <body>
 <style>
     body {
-        background: url(https://fs41.fex.net/preview/4383612625/0x0) no-repeat center center fixed;
+        background: url(https://github.com/DmitryNext/cinema/blob/main/src/main/webapp/img/movies.jpg?raw=true) no-repeat center center fixed;
     }
     div {
         color: whitesmoke;

@@ -26,10 +26,10 @@ public class ErrorFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) request;
         try {
-            chain.doFilter(request, response);
+            chain.doFilter(req, res);
         } catch (Exception e) {
             LOGGER.debug("An exception happened");
-            request.getRequestDispatcher(errorPage).forward(request, response);
+            request.getRequestDispatcher(errorPage).forward(req, res);
         }
     }
 }

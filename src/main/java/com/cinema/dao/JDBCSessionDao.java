@@ -31,8 +31,6 @@ public class JDBCSessionDao implements SessionDao {
                         Statement.RETURN_GENERATED_KEYS);
              PreparedStatement pstm2 = connection.prepareStatement
                      ("SELECT * FROM movies WHERE name = ? AND genre = ? AND duration = ? AND poster = ?")) {
-            connection.setAutoCommit(false);
-
             pstm2.setString(1, session.getMovie().getName());
             pstm2.setString(2, session.getMovie().getGenre().name());
             pstm2.setTime(3, session.getMovie().getDuration());
@@ -55,15 +53,13 @@ public class JDBCSessionDao implements SessionDao {
                     session.setId(generatedKeys.getInt(1));
                 }
             }
-
-            connection.commit();
-            connection.setAutoCommit(true);
             LOGGER.debug("The session has been added");
             return session;
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            rollbackQuiet(connection);
             throw new DaoException("The session wasn't created");
+        } finally {
+            close();
         }
     }
 
@@ -80,35 +76,21 @@ public class JDBCSessionDao implements SessionDao {
         return movie;
     }
 
-    private void rollbackQuiet(Connection connection) {
-        try {
-            connection.rollback();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
     @Override
     public Session findById(int id) throws DaoException {
         LOGGER.debug("Getting session with id " + id);
         Session session = new Session();
         try (PreparedStatement ps = connection.prepareStatement
                 ("SELECT * FROM sessions WHERE id = ?;")) {
-            connection.setAutoCommit(false);
-
             ps.setInt(1, id);
             ResultSet rst = ps.executeQuery();
 
             while (rst.next()) {
                 session = getSession(rst);
             }
-
-            connection.commit();
-            connection.setAutoCommit(true);
             rst.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            rollbackQuiet(connection);
             throw new DaoException("The session wasn't found by id");
         }
         return session;
@@ -153,7 +135,6 @@ public class JDBCSessionDao implements SessionDao {
         LOGGER.debug("Creating a list of sessions");
         List<Session> sessionList = new ArrayList<>();
         try (PreparedStatement pstm = connection.prepareStatement("SELECT * FROM sessions")) {
-            connection.setAutoCommit(false);
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
@@ -161,11 +142,8 @@ public class JDBCSessionDao implements SessionDao {
             }
 
             rs.close();
-            connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            rollbackQuiet(connection);
             throw new DaoException("Session list couldn't be loaded");
         }
         return sessionList;
@@ -211,8 +189,8 @@ public class JDBCSessionDao implements SessionDao {
             while(rs.next()) {
                 temp.add(getSession(rs));
             }
-            rs.close();
 
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DaoException("No pages could be found");

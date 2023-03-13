@@ -1,7 +1,7 @@
 package com.cinema.controller;
 
 import com.cinema.MappingProperties;
-import com.cinema.Ticket.TicketService;
+import com.cinema.ticket.TicketService;
 import com.cinema.exception.DaoException;
 import com.cinema.seat.Seat;
 import com.cinema.seat.SeatBuilder;
